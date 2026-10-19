@@ -15,8 +15,8 @@ export function Nav({ active }: { active?: string }) {
           href={l.href}
           className={`rounded-lg px-3 py-1.5 transition-colors ${
             active === l.href
-              ? "bg-[var(--primary)]/10 font-medium text-[var(--primary)]"
-              : "text-[var(--muted)] hover:bg-[var(--border)]/60 hover:text-[var(--foreground)]"
+              ? "bg-teal-50 font-medium text-teal-700"
+              : "text-stone-500 hover:bg-stone-100 hover:text-stone-800"
           }`}
         >
           {l.label}
