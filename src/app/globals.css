@@ -1,0 +1,41 @@
+@import "tailwindcss";
+
+:root {
+  /* Light theme only — WealthTwin */
+  --background: #FAFAF9;
+  --surface: #FFFFFF;
+  --foreground: #1C1917;
+  --muted: #78716C;
+  --border: #E7E5E4;
+  --primary: #0D9488;
+  --primary-foreground: #FFFFFF;
+  --accent: #0EA5E9;
+  --success: #10B981;
+  --warning: #F59E0B;
+  --danger: #EF4444;
+  --info: #3B82F6;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-accent: var(--accent);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
+  --color-info: var(--info);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+/* Explicitly no dark mode support */
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
+}
