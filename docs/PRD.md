@@ -1,35 +1,34 @@
-# WealthTwin — Product Requirements Document (PRD)
+# WealthTwin: Product Requirements
 
-**Competition:** Mochavate Round 2 · Build Sprint · Mochatrade  
-**Theme:** AI-powered product for finance, investing, or financial education  
+**Challenge:** Mochavate Product Innovation Challenge (Mochatrade), Round 2 Build Sprint
 
-## Product Name & Identity
+## Problem
+Young earners and freelancers manage money reactively. They learn about a cash crunch when the balance hits zero, cannot tell whether a purchase is safe, and find generic financial education unrelated to their situation.
 
-| Item | Value |
-|------|-------|
-| **Name** | **WealthTwin** |
-| **Tagline** | Your Living Digital Finance Twin |
-| **One-liner** | A dynamic digital twin that continuously fuses simulated transaction streams, portfolio data and life goals to predict cashflow stress, surface explainable opportunities and deliver personalised financial education. |
+## Users
+Salaried early-career professionals, freelancers with irregular income, and single-income families with loans.
 
-## Problem Statement
+## Solution
+A financial digital twin: one live model of income, bills, investments and goals that predicts, explains, simulates and teaches.
 
-Most people manage money reactively. A true Financial Digital Twin can shift money management from reactive to proactive by predicting cashflow stress, surface personalised opportunities and deliver education grounded in the user’s real numbers.
+## Features
+1. 90-day cashflow forecast with likely range and safety floor
+2. Explainable health score (savings rate, runway, stability, debt burden, portfolio fit)
+3. What-if simulator (income, spend, SIP, one-time expense, market fall, expected return)
+4. Goal probability (Monte Carlo) and required monthly contribution
+5. Portfolio view with age-based rebalancing plan
+6. AI Copilot with affordability checks and shown basis
+7. Contextual learning with quizzes
+8. Three personas to demonstrate adaptation
 
-## Target Users
+## Principles
+Light theme, synthetic data labelled on every screen, explainability over opacity, education not advice.
 
-Young professionals / retail investors in India, goal-oriented savers, and competition evaluators.
+## Business potential
+B2B2C embedding for brokers and neobanks (engagement, activation of SIPs, lower churn), freemium premium tier for household planning, and white-label education for employers.
 
-## Core Features (MVP)
+## Metrics
+Forecast-alert open rate, simulator sessions per user, SIP activation after a recommendation, lesson completion.
 
-1. Landing / Demo entry with synthetic-data notice
-2. Twin Dashboard — Financial Health Score, cashflow, portfolio risk, goals
-3. Insights & Alerts with explanations
-4. Goals progress
-5. Portfolio snapshot
-6. Explainability panel (contributing factors)
-
-## Design Constraints
-
-- Light theme only
-- Synthetic data clearly labelled
-- Explainable scores only
+## Roadmap
+Account Aggregator integration for real transactions, tax-aware planning, family twin, regulated advisory partnership.

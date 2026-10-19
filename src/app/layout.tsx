@@ -1,35 +1,20 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import { GeistSans } from "geist/font/sans";
+import { GeistMono } from "geist/font/mono";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
 export const metadata: Metadata = {
-  title: "WealthTwin — Your Living Digital Finance Twin",
+  title: "WealthTwin — Your living digital finance twin",
   description:
-    "AI-powered financial digital twin that predicts cashflow stress, surfaces explainable opportunities and delivers personalised financial education. Synthetic data demo.",
+    "An AI-powered financial digital twin that forecasts cashflow stress, explains your money health, simulates decisions and teaches with your own numbers. Synthetic data demo built for Mochavate by Mochatrade.",
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export const viewport: Viewport = { themeColor: "#f7f8fa", colorScheme: "light" };
+
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[var(--background)] text-[var(--foreground)]`}
-      >
-        {children}
-      </body>
+    <html lang="en" className={`${GeistSans.variable} ${GeistMono.variable}`}>
+      <body className="min-h-screen antialiased">{children}</body>
     </html>
   );
 }
