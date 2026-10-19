@@ -10,18 +10,22 @@ export default function HomePage() {
   const twin = computeTwinState();
 
   return (
-    <div className="min-h-screen bg-[var(--background)]">
-      <header className="sticky top-0 z-20 border-b border-[var(--border)] bg-[var(--surface)]/90 backdrop-blur">
+    <div className="min-h-screen bg-stone-50">
+      <header className="sticky top-0 z-20 border-b border-stone-200 bg-white/90 backdrop-blur">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-3 sm:px-6">
           <div className="flex items-center gap-3">
-            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[var(--primary)] text-sm font-bold text-white">WT</div>
+            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-teal-600 text-sm font-bold text-white">
+              WT
+            </div>
             <div>
-              <p className="text-sm font-semibold tracking-tight">WealthTwin</p>
-              <p className="text-xs text-[var(--muted)]">Your Living Digital Finance Twin</p>
+              <p className="text-sm font-semibold tracking-tight text-stone-900">WealthTwin</p>
+              <p className="text-xs text-stone-500">Your Living Digital Finance Twin</p>
             </div>
           </div>
           <Nav active="/" />
-          <span className="rounded-full bg-amber-50 px-3 py-1 text-xs font-medium text-amber-800">Synthetic data demo</span>
+          <span className="rounded-full bg-amber-50 px-3 py-1 text-xs font-medium text-amber-800">
+            Synthetic data demo
+          </span>
         </div>
       </header>
 
@@ -29,14 +33,18 @@ export default function HomePage() {
         <section className="mb-8">
           <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <p className="text-sm text-[var(--muted)]">Demo twin for</p>
-              <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">{twin.displayName}</h1>
-              <p className="mt-1 text-sm text-[var(--muted)]">All numbers below are synthetic and generated for this proof-of-concept.</p>
+              <p className="text-sm text-stone-500">Demo twin for</p>
+              <h1 className="text-2xl font-semibold tracking-tight text-stone-900 sm:text-3xl">
+                {twin.displayName}
+              </h1>
+              <p className="mt-1 text-sm text-stone-500">
+                All numbers below are synthetic and generated for this proof-of-concept.
+              </p>
             </div>
-            <div className="mt-4 rounded-2xl border border-[var(--border)] bg-[var(--surface)] px-5 py-3 text-center shadow-sm sm:mt-0">
-              <p className="text-xs text-[var(--muted)]">Financial Health</p>
-              <p className="text-3xl font-semibold text-[var(--primary)]">{twin.financialHealthScore}</p>
-              <p className="text-xs text-[var(--muted)]">out of 100</p>
+            <div className="mt-4 rounded-2xl border border-stone-200 bg-white px-5 py-3 text-center shadow-sm sm:mt-0">
+              <p className="text-xs text-stone-500">Financial Health</p>
+              <p className="text-3xl font-semibold text-teal-600">{twin.financialHealthScore}</p>
+              <p className="text-xs text-stone-500">out of 100</p>
             </div>
           </div>
         </section>
@@ -44,23 +52,37 @@ export default function HomePage() {
         <section className="mb-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <Card>
             <CardHeader><CardTitle>Net Worth</CardTitle></CardHeader>
-            <p className="text-2xl font-semibold">{formatCurrency(twin.netWorth, twin.currency, true)}</p>
-            <p className="mt-1 text-xs text-[var(--muted)]">Portfolio + cash buffer</p>
+            <p className="text-2xl font-semibold text-stone-900">
+              {formatCurrency(twin.netWorth, twin.currency, true)}
+            </p>
+            <p className="mt-1 text-xs text-stone-500">Portfolio + cash buffer</p>
           </Card>
           <Card>
-            <CardHeader><CardTitle>Cashflow Health</CardTitle><RiskBadge level={twin.cashflowHealth} /></CardHeader>
-            <p className="text-2xl font-semibold">{formatCurrency(twin.monthlyIncome - twin.monthlyExpense, twin.currency)}</p>
-            <p className="mt-1 text-xs text-[var(--muted)]">Avg monthly surplus</p>
+            <CardHeader>
+              <CardTitle>Cashflow Health</CardTitle>
+              <RiskBadge level={twin.cashflowHealth} />
+            </CardHeader>
+            <p className="text-2xl font-semibold text-stone-900">
+              {formatCurrency(twin.monthlyIncome - twin.monthlyExpense, twin.currency)}
+            </p>
+            <p className="mt-1 text-xs text-stone-500">Avg monthly surplus</p>
           </Card>
           <Card>
-            <CardHeader><CardTitle>Portfolio Risk</CardTitle><RiskBadge level={twin.portfolioRisk} /></CardHeader>
-            <p className="text-2xl font-semibold">{formatCurrency(twin.holdings.reduce((s, h) => s + h.value, 0), twin.currency, true)}</p>
-            <p className="mt-1 text-xs text-[var(--muted)]">Invested assets</p>
+            <CardHeader>
+              <CardTitle>Portfolio Risk</CardTitle>
+              <RiskBadge level={twin.portfolioRisk} />
+            </CardHeader>
+            <p className="text-2xl font-semibold text-stone-900">
+              {formatCurrency(twin.holdings.reduce((s, h) => s + h.value, 0), twin.currency, true)}
+            </p>
+            <p className="mt-1 text-xs text-stone-500">Invested assets</p>
           </Card>
           <Card>
             <CardHeader><CardTitle>Emergency Fund</CardTitle></CardHeader>
-            <p className="text-2xl font-semibold">{twin.emergencyFundMonths.toFixed(1)} mo</p>
-            <p className="mt-1 text-xs text-[var(--muted)]">Target: 6 months</p>
+            <p className="text-2xl font-semibold text-stone-900">
+              {twin.emergencyFundMonths.toFixed(1)} mo
+            </p>
+            <p className="mt-1 text-xs text-stone-500">Target: 6 months</p>
           </Card>
         </section>
 
@@ -68,7 +90,9 @@ export default function HomePage() {
           <Card>
             <CardHeader>
               <CardTitle>Cashflow (last 6 months)</CardTitle>
-              <Link href="/insights" className="text-xs font-medium text-[var(--primary)] hover:underline">View insights →</Link>
+              <Link href="/insights" className="text-xs font-medium text-teal-600 hover:underline">
+                View insights →
+              </Link>
             </CardHeader>
             <CashflowChart data={twin.cashflowSeries} />
           </Card>
@@ -78,17 +102,19 @@ export default function HomePage() {
           <Card>
             <CardHeader>
               <CardTitle>Latest Insights</CardTitle>
-              <Link href="/insights" className="text-xs font-medium text-[var(--primary)] hover:underline">See all →</Link>
+              <Link href="/insights" className="text-xs font-medium text-teal-600 hover:underline">
+                See all →
+              </Link>
             </CardHeader>
             <ul className="space-y-4">
               {twin.insights.slice(0, 2).map((insight) => (
-                <li key={insight.id} className="border-b border-[var(--border)] pb-3 last:border-0 last:pb-0">
+                <li key={insight.id} className="border-b border-stone-100 pb-3 last:border-0 last:pb-0">
                   <div className="mb-1 flex items-center gap-2">
                     <RiskBadge level={insight.severity} />
-                    <span className="text-xs capitalize text-[var(--muted)]">{insight.category}</span>
+                    <span className="text-xs capitalize text-stone-500">{insight.category}</span>
                   </div>
-                  <p className="text-sm font-medium">{insight.title}</p>
-                  <p className="mt-0.5 text-sm text-[var(--muted)]">{insight.body}</p>
+                  <p className="text-sm font-medium text-stone-900">{insight.title}</p>
+                  <p className="mt-0.5 text-sm text-stone-500">{insight.body}</p>
                 </li>
               ))}
             </ul>
@@ -97,10 +123,12 @@ export default function HomePage() {
             <CardHeader><CardTitle>Recommended Actions</CardTitle></CardHeader>
             <ul className="space-y-4">
               {twin.recommendations.slice(0, 2).map((rec) => (
-                <li key={rec.id} className="rounded-xl border border-[var(--border)] bg-[var(--background)] p-3">
-                  <p className="text-sm font-medium">{rec.title}</p>
-                  <p className="mt-1 text-sm text-[var(--muted)]">{rec.description}</p>
-                  {rec.impactEstimate && <p className="mt-2 text-xs font-medium text-[var(--primary)]">{rec.impactEstimate}</p>}
+                <li key={rec.id} className="rounded-xl border border-stone-100 bg-stone-50 p-3">
+                  <p className="text-sm font-medium text-stone-900">{rec.title}</p>
+                  <p className="mt-1 text-sm text-stone-500">{rec.description}</p>
+                  {rec.impactEstimate && (
+                    <p className="mt-2 text-xs font-medium text-teal-600">{rec.impactEstimate}</p>
+                  )}
                 </li>
               ))}
             </ul>
@@ -109,18 +137,26 @@ export default function HomePage() {
 
         <section className="mb-8">
           <div className="mb-4 flex items-center justify-between">
-            <h2 className="text-lg font-semibold">Goals</h2>
-            <Link href="/goals" className="text-sm font-medium text-[var(--primary)] hover:underline">Timeline →</Link>
+            <h2 className="text-lg font-semibold text-stone-900">Goals</h2>
+            <Link href="/goals" className="text-sm font-medium text-teal-600 hover:underline">
+              Timeline →
+            </Link>
           </div>
           <div className="grid gap-4 sm:grid-cols-3">
             {twin.goals.map((goal) => (
               <Card key={goal.id}>
-                <p className="text-sm font-medium">{goal.name}</p>
-                <p className="mt-2 text-xl font-semibold">{formatPercent(goal.progress)}</p>
-                <div className="mt-2 h-2 overflow-hidden rounded-full bg-[var(--border)]">
-                  <div className="h-full rounded-full bg-[var(--primary)]" style={{ width: `${Math.min(100, goal.progress * 100)}%` }} />
+                <p className="text-sm font-medium text-stone-900">{goal.name}</p>
+                <p className="mt-2 text-xl font-semibold text-stone-900">{formatPercent(goal.progress)}</p>
+                <div className="mt-2 h-2 overflow-hidden rounded-full bg-stone-100">
+                  <div
+                    className="h-full rounded-full bg-teal-600"
+                    style={{ width: `${Math.min(100, goal.progress * 100)}%` }}
+                  />
                 </div>
-                <p className="mt-2 text-xs text-[var(--muted)]">{formatCurrency(goal.currentAmount, twin.currency, true)} of {formatCurrency(goal.targetAmount, twin.currency, true)}</p>
+                <p className="mt-2 text-xs text-stone-500">
+                  {formatCurrency(goal.currentAmount, twin.currency, true)} of{" "}
+                  {formatCurrency(goal.targetAmount, twin.currency, true)}
+                </p>
               </Card>
             ))}
           </div>
@@ -129,15 +165,27 @@ export default function HomePage() {
         <section className="mb-8">
           <Card>
             <CardHeader><CardTitle>Why this health score?</CardTitle></CardHeader>
-            <p className="mb-4 text-sm text-[var(--muted)]">Every factor below is used by the twin engine. No black-box scores.</p>
+            <p className="mb-4 text-sm text-stone-500">
+              Every factor below is used by the twin engine. No black-box scores.
+            </p>
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {twin.factors.map((f) => (
-                <div key={f.id} className="rounded-xl border border-[var(--border)] p-3">
+                <div key={f.id} className="rounded-xl border border-stone-100 p-3">
                   <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium">{f.label}</span>
-                    <span className={f.impact === "positive" ? "text-xs text-emerald-600" : f.impact === "negative" ? "text-xs text-red-600" : "text-xs text-[var(--muted)]"}>{f.impact}</span>
+                    <span className="text-sm font-medium text-stone-900">{f.label}</span>
+                    <span
+                      className={
+                        f.impact === "positive"
+                          ? "text-xs text-emerald-600"
+                          : f.impact === "negative"
+                            ? "text-xs text-red-600"
+                            : "text-xs text-stone-500"
+                      }
+                    >
+                      {f.impact}
+                    </span>
                   </div>
-                  {f.detail && <p className="mt-1 text-xs text-[var(--muted)]">{f.detail}</p>}
+                  {f.detail && <p className="mt-1 text-xs text-stone-500">{f.detail}</p>}
                 </div>
               ))}
             </div>
@@ -145,7 +193,9 @@ export default function HomePage() {
         </section>
 
         <footer className="rounded-2xl border border-amber-200 bg-amber-50 px-5 py-4 text-center text-sm text-amber-900">
-          <strong>Synthetic Data Notice:</strong> All user profiles, transactions, holdings and insights in this demonstration are artificially generated. No real financial data is collected or stored.
+          <strong>Synthetic Data Notice:</strong> All user profiles, transactions,
+          holdings and insights in this demonstration are artificially generated.
+          No real financial data is collected or stored.
         </footer>
       </main>
     </div>
