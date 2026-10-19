@@ -1,47 +1,34 @@
 # WealthTwin
 
-**Your Living Digital Finance Twin**
+**Your living digital finance twin.** Built for the Mochavate Product Innovation Challenge by Mochatrade.
 
-Proof-of-concept for **Mochavate Round 2** by Mochatrade.  
-AI-powered product concept that solves a meaningful problem in finance & financial education.
+WealthTwin fuses (synthetic) transactions, bills, portfolio and goals into one explainable model that:
 
----
+- **Forecasts cashflow stress** 90 days ahead with a likely range and a safety floor
+- **Explains financial health** as five weighted, inspectable factors
+- **Simulates decisions** (raise, market crash, medical bill, extra SIP) with instant recompute
+- **Scores goals probabilistically** using a 300-path Monte Carlo
+- **Answers questions** via an AI Copilot grounded in the twin (works offline on the built-in engine; uses Claude when `ANTHROPIC_API_KEY` is set)
+- **Teaches in context** with lessons and quizzes that quote the user's own numbers
 
-## What is WealthTwin?
+All data is synthetic. Educational use only, not investment advice.
 
-WealthTwin is a dynamic digital twin that continuously fuses simulated transaction streams, portfolio data and life goals to:
-
-- Predict cashflow stress before it happens
-- Surface explainable savings & investment opportunities
-- Deliver personalised financial education grounded in the user’s real numbers
-
-**All data in this demonstration is synthetic.**
-
-## Stack
-
-- Next.js 15 + TypeScript + Tailwind CSS (light theme only)
-- Pure client-side synthetic data generators
-- Explainable rule-based risk models
-
-## Quick start
+## Run
 
 ```bash
 npm install
-npm run dev
+npm run dev        # http://localhost:3000
+npm test           # engine unit tests
+npm run build
 ```
 
-Open http://localhost:3000
+Optional: copy `.env.example` to `.env.local` and add `ANTHROPIC_API_KEY` for AI-written Copilot answers.
 
-## Documentation
+## Architecture
 
-See `/docs` for PRD, ARCHITECTURE, DESIGN, RULES, TASKS, MEMORY.
+- `src/services/engine.ts`: pure, deterministic twin builder (runs on server and in the browser)
+- `src/services/copilot.ts`: intent engine with affordability simulation
+- `src/app/api/copilot`: validated, rate-limited route with graceful AI fallback
+- Next.js 15 App Router, Tailwind v4, Recharts, light theme only
 
-## Design constraints
-
-- Light theme only — no dark mode
-- Synthetic data clearly labelled on every screen
-- Explainable scores (contributing factors always shown)
-
-## Licence
-
-Demo / educational use for Mochavate.
+See `docs/` for PRD, pitch and demo script.

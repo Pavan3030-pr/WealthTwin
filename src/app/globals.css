@@ -1,44 +1,52 @@
 @import "tailwindcss";
 
-/* Light theme only — WealthTwin */
-:root {
-  --background: #fafaf9;
-  --surface: #ffffff;
-  --foreground: #1c1917;
-  --muted: #78716c;
-  --border: #e7e5e4;
-  --primary: #0d9488;
-}
-
 @theme {
-  --color-background: #fafaf9;
-  --color-surface: #ffffff;
-  --color-foreground: #1c1917;
-  --color-muted: #78716c;
-  --color-border: #e7e5e4;
-  --color-primary: #0d9488;
-  --color-primary-foreground: #ffffff;
-  --color-accent: #0ea5e9;
-  --color-success: #10b981;
-  --color-warning: #f59e0b;
-  --color-danger: #ef4444;
-  --font-sans: var(--font-geist-sans), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --color-canvas: #f7f8fa;
+  --color-ink: #0f172a;
+  --color-brand-50: #effdfa;
+  --color-brand-100: #ccfbef;
+  --color-brand-500: #14b8a6;
+  --color-brand-600: #0d9488;
+  --color-brand-700: #0f766e;
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  --animate-rise: rise 0.5s cubic-bezier(0.22, 0.61, 0.36, 1) both;
 }
 
-html,
-body {
-  background-color: #fafaf9;
-  color: #1c1917;
+@keyframes rise {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+
+:root { color-scheme: light; }
+
+html, body {
+  background: var(--color-canvas);
+  color: var(--color-ink);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
-/* App chrome links should not be browser-default blue */
-a {
-  color: inherit;
-  text-decoration: none;
+@layer base {
+  a { color: inherit; text-decoration: none; }
 }
-a:hover {
-  text-decoration: none;
+.num { font-variant-numeric: tabular-nums; letter-spacing: -0.01em; }
+:focus-visible { outline: 2px solid var(--color-brand-600); outline-offset: 2px; border-radius: 8px; }
+
+input[type="range"] { accent-color: #0d9488; width: 100%; height: 6px; cursor: pointer; }
+
+.bg-wash {
+  background:
+    radial-gradient(900px 380px at 12% -10%, rgba(20, 184, 166, 0.14), transparent 60%),
+    radial-gradient(700px 320px at 95% 0%, rgba(56, 189, 248, 0.12), transparent 60%),
+    var(--color-canvas);
+}
+.bg-grid {
+  background-image: linear-gradient(to right, rgba(15,23,42,0.04) 1px, transparent 1px), linear-gradient(to bottom, rgba(15,23,42,0.04) 1px, transparent 1px);
+  background-size: 36px 36px;
+  mask-image: radial-gradient(ellipse at 50% 0%, black 30%, transparent 75%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
 }

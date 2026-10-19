@@ -1,17 +1,2 @@
-# WealthTwin — Design System
-
-Light theme only. Calm, trustworthy, modern finance aesthetic.
-
-## Colour Tokens
-
-- --background: #FAFAF9
-- --surface: #FFFFFF
-- --foreground: #1C1917
-- --primary: #0D9488 (teal)
-- --accent: #0EA5E9
-- --success / --warning / --danger
-
-No dark mode. No dark: classes.
-
-## Components
-Cards, Risk badges (green/amber/red), progress bars, tables.
+# Design system
+Light theme only. Slate neutrals, teal brand (#0D9488), sky accent. Geist Sans. Cards: 16px radius, hairline border, soft shadow. Tabular numerals for money. Risk colours: emerald / amber / rose with text labels (never colour alone). Respects reduced motion.

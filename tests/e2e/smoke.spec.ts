@@ -1,63 +1,33 @@
 import { test, expect } from "@playwright/test";
 
-test.describe("WealthTwin smoke", () => {
-  test("dashboard loads with synthetic twin data", async ({ page }) => {
-    await page.goto("/");
+test("landing to dashboard", async ({ page }) => {
+  await page.goto("/");
+  await expect(page.getByRole("heading", { level: 1 })).toContainText("one step ahead");
+  await page.getByRole("link", { name: "Explore the twin" }).click();
+  await expect(page).toHaveURL(/dashboard/);
+  await expect(page.getByText("Synthetic data demo").first()).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Financial health" })).toBeVisible();
+});
 
-    await expect(page.getByText("WealthTwin").first()).toBeVisible();
-    await expect(page.getByText("Synthetic data demo")).toBeVisible();
-    await expect(page.getByRole("heading", { name: "Aarav Sharma" })).toBeVisible();
-    await expect(page.getByText("Financial Health")).toBeVisible();
+test("every page renders", async ({ page }) => {
+  for (const [path, heading] of [
+    ["/forecast", "Your next 90 days"], ["/simulator", "Test a decision"], ["/portfolio", "Allocation, risk"],
+    ["/goals", "Goals and probability"], ["/insights", "What your twin noticed"], ["/copilot", "Ask in plain language"], ["/learn", "Lessons that use"],
+  ]) {
+    await page.goto(path);
+    await expect(page.getByRole("heading", { level: 1 })).toContainText(heading);
+  }
+});
 
-    // Risk cards — use headings to avoid matching body text
-    await expect(page.getByRole("heading", { name: "Net Worth" })).toBeVisible();
-    await expect(page.getByRole("heading", { name: "Cashflow Health" })).toBeVisible();
-    await expect(page.getByRole("heading", { name: "Portfolio Risk" })).toBeVisible();
-    await expect(page.getByRole("heading", { name: "Emergency Fund" })).toBeVisible();
+test("simulator reacts to a preset", async ({ page }) => {
+  await page.goto("/simulator");
+  await page.getByRole("button", { name: "Medical bill ₹1.5L" }).click();
+  await expect(page.getByText("Impact summary")).toBeVisible();
+});
 
-    await expect(
-      page.getByRole("heading", { name: "Cashflow (last 6 months)" })
-    ).toBeVisible();
-    await expect(page.getByText(/Synthetic Data Notice/i)).toBeVisible();
-  });
-
-  test("insights page loads and shows explainable factors", async ({ page }) => {
-    await page.goto("/insights");
-
-    await expect(
-      page.getByRole("heading", { name: "Insights & Alerts" })
-    ).toBeVisible();
-    await expect(page.getByText("Synthetic data demo")).toBeVisible();
-    await expect(
-      page.getByRole("heading", { name: "Contributing factors (explainability)" })
-    ).toBeVisible();
-  });
-
-  test("goals page shows timeline", async ({ page }) => {
-    await page.goto("/goals");
-
-    await expect(
-      page.getByRole("heading", { name: "Goals & Timeline" })
-    ).toBeVisible();
-    await expect(
-      page.getByRole("heading", { name: "Projected Timeline" })
-    ).toBeVisible();
-    await expect(
-      page.getByRole("heading", { name: "Emergency Fund (6 months)" })
-    ).toBeVisible();
-  });
-
-  test("navigation between pages works", async ({ page }) => {
-    await page.goto("/");
-
-    // exact: true so "View insights →" does not match
-    await page.getByRole("link", { name: "Insights", exact: true }).click();
-    await expect(page).toHaveURL(/\/insights/);
-
-    await page.getByRole("link", { name: "Goals", exact: true }).click();
-    await expect(page).toHaveURL(/\/goals/);
-
-    await page.getByRole("link", { name: "Dashboard", exact: true }).click();
-    await expect(page).toHaveURL("/");
-  });
+test("copilot answers", async ({ page }) => {
+  await page.goto("/copilot");
+  await page.getByLabel("Ask a question").fill("Can I afford a ₹30,000 purchase?");
+  await page.getByRole("button", { name: "Send" }).click();
+  await expect(page.getByText(/safety floor/).first()).toBeVisible({ timeout: 15000 });
 });
