@@ -1,6 +1,6 @@
-import type { Persona, PersonaId } from "@/types/twin";
+import type { DemoPersonaId, Persona } from "@/types/twin";
 
-export const PERSONAS: Record<PersonaId, Persona> = {
+export const PERSONAS: Record<DemoPersonaId, Persona> = {
   aarav: {
     id: "aarav",
     name: "Aarav Sharma",
@@ -104,8 +104,8 @@ export const PERSONAS: Record<PersonaId, Persona> = {
   },
 };
 
-export const PERSONA_IDS = Object.keys(PERSONAS) as PersonaId[];
+export const PERSONA_IDS = Object.keys(PERSONAS) as DemoPersonaId[];
 
-export function isPersonaId(v: unknown): v is PersonaId {
+export function isDemoPersonaId(v: unknown): v is DemoPersonaId {
   return typeof v === "string" && v in PERSONAS;
 }

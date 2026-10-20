@@ -10,7 +10,7 @@ export function ScoreRing({ score, size = 168, label = "Health score" }: { score
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center">
         <span className="num text-4xl font-semibold text-slate-900">{score}</span>
-        <span className="text-[11px] font-medium uppercase tracking-wider text-slate-500">of 100</span>
+        <span className="text-xs font-medium uppercase tracking-wider text-slate-500">of 100</span>
       </div>
     </div>
   );

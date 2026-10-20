@@ -11,7 +11,10 @@ WealthTwin fuses (synthetic) transactions, bills, portfolio and goals into one e
 - **Answers questions** via an AI Copilot grounded in the twin (works offline on the built-in engine; uses Claude when `ANTHROPIC_API_KEY` is set)
 - **Teaches in context** with lessons and quizzes that quote the user's own numbers
 
-All data is synthetic. Educational use only, not investment advice.
+- **Builds from your own numbers** (`/my-numbers`): validated form, stored only in an httpOnly cookie on your device
+- **Shows its work** (`/assumptions`): every modelling assumption lives in `src/services/assumptions.ts`
+
+Demo personas are synthetic. Educational use only, not investment advice.
 
 ## Run
 
@@ -23,6 +26,10 @@ npm run build
 ```
 
 Optional: copy `.env.example` to `.env.local` and add `ANTHROPIC_API_KEY` for AI-written Copilot answers.
+
+## Quality
+
+GitHub Actions runs lint, typecheck, unit tests, build and Playwright e2e on every push and PR (`.github/workflows/ci.yml`).
 
 ## Architecture
 

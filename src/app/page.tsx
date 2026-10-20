@@ -30,6 +30,7 @@ export default function Landing() {
           <div className="mt-8 flex flex-wrap gap-3">
             <Link href="/dashboard" className="inline-flex items-center gap-2 rounded-xl bg-teal-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-teal-700">Explore the twin <ArrowRight className="h-4 w-4" aria-hidden="true" /></Link>
             <Link href="/simulator" className="inline-flex items-center rounded-xl bg-white px-5 py-3 text-sm font-semibold text-slate-800 ring-1 ring-slate-200 transition hover:bg-slate-50">Try the simulator</Link>
+            <Link href="/my-numbers" className="inline-flex items-center rounded-xl px-5 py-3 text-sm font-semibold text-teal-700 transition hover:bg-teal-50">Use my own numbers</Link>
           </div>
           <p className="mt-4 text-xs text-slate-500">Three synthetic personas: salaried, freelancer, and a family with a home loan.</p>
         </div>

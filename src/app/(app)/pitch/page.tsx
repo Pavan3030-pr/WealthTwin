@@ -23,7 +23,7 @@ export default function PitchPage() {
       </div>
 
       <Card className="mt-5">
-        <h2 className="mb-4 text-[15px] font-semibold text-slate-900">How it maps to judging criteria</h2>
+        <h2 className="mb-4 text-base font-semibold text-slate-900">How it maps to judging criteria</h2>
         <ul className="divide-y divide-slate-100">
           {CRITERIA.map(([k, v]) => (
             <li key={k} className="flex gap-3 py-3 first:pt-0 last:pb-0"><CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-teal-600" aria-hidden="true" /><div><p className="text-sm font-semibold text-slate-900">{k}</p><p className="text-sm text-slate-600">{v}</p></div></li>

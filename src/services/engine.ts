@@ -4,13 +4,15 @@
  * Runs identically on the server and in the browser (used by the simulator).
  */
 import type {
-  AssetClass, Factor, Goal, Holding, Insight, Overrides, Persona, PersonaId,
+  AssetClass, DemoPersonaId, Factor, Goal, Holding, Insight, Overrides, Persona,
   RebalanceMove, Recommendation, RiskLevel, SpendSlice, TwinState, ForecastPoint, HistoryPoint,
 } from "@/types/twin";
 import { PERSONAS } from "./personas";
+import { A, SCORE } from "./assumptions";
 import { inr, pct, fmtDate } from "@/lib/utils";
 
-const FORECAST_DAYS = 90;
+const FORECAST_DAYS = A.FORECAST_DAYS;
+export type PersonaSource = Persona | DemoPersonaId;
 
 /* ---------- deterministic randomness ---------- */
 function mulberry32(a: number) {
@@ -59,7 +61,7 @@ export function requiredMonthly(current: number, target: number, annualReturn: n
   return Math.max(0, ((target - current * g) * i) / (g - 1));
 }
 
-export function goalProbability(current: number, monthly: number, annualReturn: number, vol: number, target: number, months: number, seed: number, paths = 300): number {
+export function goalProbability(current: number, monthly: number, annualReturn: number, vol: number, target: number, months: number, seed: number, paths: number = A.MC_PATHS): number {
   if (current >= target) return 1;
   if (months <= 0) return 0;
   const n = Math.min(months, 360);
@@ -76,8 +78,8 @@ export function goalProbability(current: number, monthly: number, annualReturn: 
 }
 
 /* ---------- builder ---------- */
-export function buildTwin(personaId: PersonaId, overrides: Overrides = {}, asOfIso?: string): TwinState {
-  const persona: Persona = PERSONAS[personaId];
+export function buildTwin(source: PersonaSource, overrides: Overrides = {}, asOfIso?: string): TwinState {
+  const persona: Persona = typeof source === "string" ? PERSONAS[source] : source;
   const asOfDate = startOfDay(asOfIso ? new Date(asOfIso + "T00:00:00") : new Date());
   const o = {
     extraSip: Math.max(-persona.goals.reduce((a, g) => a + g.monthly, 0) * 0.6, overrides.extraSip ?? 0),
@@ -119,28 +121,27 @@ export function buildTwin(personaId: PersonaId, overrides: Overrides = {}, asOfI
     return { ...h, value, expectedReturn: ret };
   });
   const invested = holdings0.reduce((s, h) => s + h.value, 0);
-  const holdings: Holding[] = holdings0.map((h) => ({ ...h, allocation: h.value / invested }));
+  const safeInvested = Math.max(invested, 1);
+  const holdings: Holding[] = holdings0.map((h) => ({ ...h, allocation: h.value / safeInvested }));
   const share = (c: AssetClass) => holdings.filter((h) => h.assetClass === c).reduce((s, h) => s + h.allocation, 0);
   const equityShare = share("equity");
-  const targetEquityShare = clamp((110 - persona.age) / 100, 0.3, 0.75);
-  const volProxy = holdings.reduce((s, h) => s + h.allocation * h.volatility, 0) * 0.85;
+  const targetEquityShare = clamp((A.EQUITY_RULE - persona.age) / 100, A.EQUITY_MIN, A.EQUITY_MAX);
+  const volProxy = holdings.reduce((s, h) => s + h.allocation * h.volatility, 0) * A.DIVERSIFICATION;
   const portfolioReturn = holdings.reduce((s, h) => s + h.allocation * h.expectedReturn, 0);
-  const portfolioRisk: RiskLevel = volProxy < 0.08 ? "low" : volProxy < 0.13 ? "medium" : "high";
-  const maxAlloc = Math.max(...holdings.map((h) => h.allocation));
+  const portfolioRisk: RiskLevel = volProxy < A.VOL_LOW ? "low" : volProxy < A.VOL_MED ? "medium" : "high";
+  const maxAlloc = holdings.length ? Math.max(...holdings.map((h) => h.allocation)) : 0;
 
   const rebalance: RebalanceMove[] = [];
-  const nonEquity = 1 - equityShare;
   const targets: Record<AssetClass, number> = {
     equity: targetEquityShare,
     debt: (1 - targetEquityShare) * 0.55,
     gold: (1 - targetEquityShare) * 0.2,
     cash: (1 - targetEquityShare) * 0.25,
   };
-  void nonEquity;
   (Object.keys(targets) as AssetClass[]).forEach((c) => {
     const cur = share(c);
-    if (Math.abs(cur - targets[c]) >= 0.06) {
-      rebalance.push({ assetClass: c, currentShare: cur, targetShare: targets[c], amount: Math.round((targets[c] - cur) * invested) });
+    if (Math.abs(cur - targets[c]) >= A.REBALANCE_BAND) {
+      rebalance.push({ assetClass: c, currentShare: cur, targetShare: targets[c], amount: Math.round((targets[c] - cur) * safeInvested) });
     }
   });
 
@@ -160,7 +161,7 @@ export function buildTwin(personaId: PersonaId, overrides: Overrides = {}, asOfI
     const u = hashRand(persona.seed, epochDay(d) + 1700);
     return (baseIncome / 2.5) * (1 + 0.6 * (u * 2 - 1));
   };
-  const pessInc = 1 - 0.5 * persona.incomeVolatility - 0.05;
+  const pessInc = 1 - 0.5 * persona.incomeVolatility - A.PESSIMISTIC_INCOME_BASE;
   let bal = startCash, balLow = startCash, balHigh = startCash;
   const forecast: ForecastPoint[] = [];
   for (let i = 0; i < FORECAST_DAYS; i++) {
@@ -173,12 +174,12 @@ export function buildTwin(personaId: PersonaId, overrides: Overrides = {}, asOfI
     if (d.getDate() === 5) { out += sipTotal; events.push(`SIP ${inr(sipTotal, true)}`); }
     if (i === 6 && o.shock > 0) events.push(`One-time expense ${inr(o.shock, true)} (already deducted)`);
     const dow = d.getDay();
-    const weekend = dow === 0 || dow === 6 ? 1.3 : 1;
-    const noise = 1 + 0.3 * (hashRand(persona.seed, epochDay(d) + 300) * 2 - 1);
-    const dv = (dailyVar * weekend * noise) / 1.086;
+    const weekend = dow === 0 || dow === 6 ? A.WEEKEND_FACTOR : 1;
+    const noise = 1 + A.DAILY_NOISE * (hashRand(persona.seed, epochDay(d) + 300) * 2 - 1);
+    const dv = (dailyVar * weekend * noise) / ((5 + 2 * A.WEEKEND_FACTOR) / 7);
     bal += inc - out - dv;
-    balLow += inc * pessInc - out - dv * 1.2;
-    balHigh += inc * 1.04 - out - dv * 0.92;
+    balLow += inc * pessInc - out - dv * A.PESSIMISTIC_VARIABLE;
+    balHigh += inc * A.OPTIMISTIC_INCOME - out - dv * A.OPTIMISTIC_VARIABLE;
     inc = 0;
     forecast.push({
       date: toIso(d),
@@ -189,7 +190,7 @@ export function buildTwin(personaId: PersonaId, overrides: Overrides = {}, asOfI
       events,
     });
   }
-  const safetyFloor = Math.round((avgExpense / 30) * 10);
+  const safetyFloor = Math.round((avgExpense / 30) * A.SAFETY_FLOOR_DAYS);
   const minPoint = forecast.reduce((m, p) => (p.expected < m.expected ? p : m), forecast[0]);
   const pessimisticMin = Math.min(...forecast.map((p) => p.low));
   const below = forecast.filter((p) => p.expected < safetyFloor);
@@ -223,8 +224,8 @@ export function buildTwin(personaId: PersonaId, overrides: Overrides = {}, asOfI
     const emergency = g.kind === "emergency";
     const current = emergency ? liquid : g.currentAmount;
     const monthly = Math.max(0, g.monthly + (g.id === "g2" ? o.extraSip : 0));
-    const ret = emergency ? 0.065 : portfolioReturn;
-    const vol = emergency ? 0.005 : volProxy;
+    const ret = emergency ? A.EMERGENCY_RETURN : portfolioReturn;
+    const vol = emergency ? A.EMERGENCY_VOL : volProxy;
     const target = new Date(g.targetDate + "T00:00:00");
     const monthsLeft = Math.max(0, monthsBetween(asOfDate, target));
     const m = monthsToTarget(current, monthly, ret, g.targetAmount);
@@ -248,27 +249,27 @@ export function buildTwin(personaId: PersonaId, overrides: Overrides = {}, asOfI
       const g = Math.pow(1 + i, n);
       return invested * g + (i === 0 ? sipTotal * n : sipTotal * ((g - 1) / i)) + startCash;
     };
-    return { year: asOfDate.getFullYear() + y, base: Math.round(grow(portfolioReturn)), downside: Math.round(grow(portfolioReturn - volProxy * 0.8)) };
+    return { year: asOfDate.getFullYear() + y, base: Math.round(grow(portfolioReturn)), downside: Math.round(grow(portfolioReturn - volProxy * A.DOWNSIDE_K)) };
   });
 
   /* health score */
-  const rateP = clamp(savingsRate / 0.3, 0, 1) * 25;
-  const runwayP = clamp(emergencyMonths / 6, 0, 1) * 25;
+  const rateP = clamp(savingsRate / SCORE.rate.target, 0, 1) * SCORE.rate.max;
+  const runwayP = clamp(emergencyMonths / SCORE.runway.months, 0, 1) * SCORE.runway.max;
   const debtRatio = emiTotal / monthlyIncome;
-  const debtP = (1 - clamp((debtRatio - 0.15) / 0.35, 0, 1)) * 15;
+  const debtP = (1 - clamp((debtRatio - SCORE.debt.full) / (SCORE.debt.zero - SCORE.debt.full), 0, 1)) * SCORE.debt.max;
   const drift = Math.abs(equityShare - targetEquityShare);
-  const divP = Math.max(0, (1 - clamp(drift / 0.35, 0, 1)) * 15 - (maxAlloc > 0.45 ? 3 : 0));
-  const stabP = cashflowHealth === "low" ? 20 : cashflowHealth === "medium" ? 11 : 3;
+  const divP = Math.max(0, (1 - clamp(drift / SCORE.mix.driftZero, 0, 1)) * SCORE.mix.max - (maxAlloc > SCORE.mix.concentration ? SCORE.mix.penalty : 0));
+  const stabP = cashflowHealth === "low" ? SCORE.stability.max : cashflowHealth === "medium" ? SCORE.stability.mid : SCORE.stability.low;
   const mk = (id: string, label: string, points: number, max: number, detail: string): Factor => ({
     id, label, points: Math.round(points * 10) / 10, max, detail,
     impact: points / max >= 0.7 ? "positive" : points / max < 0.45 ? "negative" : "neutral",
   });
   const factors: Factor[] = [
-    mk("rate", "Savings rate", rateP, 25, `You keep ${pct(savingsRate)} of income; 30% earns full marks.`),
-    mk("runway", "Emergency runway", runwayP, 25, `${emergencyMonths.toFixed(1)} months of expenses are liquid; 6 months earns full marks.`),
-    mk("stability", "90-day cashflow stability", stabP, 20, cashflowHealth === "low" ? "Balance stays above your safety floor, even in the pessimistic case." : cashflowHealth === "medium" ? "Pessimistic case dips below your safety floor." : "Projected balance dips below your safety floor."),
-    mk("debt", "Debt burden", debtP, 15, `EMIs take ${pct(debtRatio)} of income; under 15% is full marks.`),
-    mk("mix", "Portfolio fit", divP, 15, `${pct(equityShare)} equity vs ${pct(targetEquityShare)} suggested for age ${persona.age}${maxAlloc > 0.45 ? "; one holding exceeds 45%" : ""}.`),
+    mk("rate", "Savings rate", rateP, SCORE.rate.max, `You keep ${pct(savingsRate)} of income; 30% earns full marks.`),
+    mk("runway", "Emergency runway", runwayP, SCORE.runway.max, `${emergencyMonths.toFixed(1)} months of expenses are liquid; 6 months earns full marks.`),
+    mk("stability", "90-day cashflow stability", stabP, SCORE.stability.max, cashflowHealth === "low" ? "Balance stays above your safety floor, even in the pessimistic case." : cashflowHealth === "medium" ? "Pessimistic case dips below your safety floor." : "Projected balance dips below your safety floor."),
+    mk("debt", "Debt burden", debtP, SCORE.debt.max, `EMIs take ${pct(debtRatio)} of income; under 15% is full marks.`),
+    mk("mix", "Portfolio fit", divP, SCORE.mix.max, `${pct(equityShare)} equity vs ${pct(targetEquityShare)} suggested for age ${persona.age}${maxAlloc > 0.45 ? "; one holding exceeds 45%" : ""}.`),
   ];
   const score = Math.round(factors.reduce((s, f) => s + f.points, 0));
   const grade = score >= 80 ? "Excellent" : score >= 65 ? "Good" : score >= 50 ? "Fair" : "Needs attention";

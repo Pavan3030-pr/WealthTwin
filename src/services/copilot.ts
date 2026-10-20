@@ -1,5 +1,5 @@
-import type { PersonaId, TwinState } from "@/types/twin";
-import { buildTwin } from "./engine";
+import type { TwinState } from "@/types/twin";
+import { buildTwin, type PersonaSource } from "./engine";
 import { inr, pct, fmtDate } from "@/lib/utils";
 
 export interface CopilotAnswer {
@@ -8,15 +8,15 @@ export interface CopilotAnswer {
   followUps: string[];
 }
 
-function parseAmount(q: string): number | null {
-  const m = q.toLowerCase().replace(/,/g, "").match(/(?:₹|rs\.?|inr)?\s*(\d+(?:\.\d+)?)\s*(k|l|lakh|lakhs|cr|crore)?/);
+export function parseAmount(q: string): number | null {
+  const m = q.toLowerCase().replace(/,/g, "").match(/(?:₹|rs\.?|inr)?\s*(\d+(?:\.\d+)?)(?:\s*(k|lakhs?|lacs?|l|cr|crores?)(?![a-z]))?/);
   if (!m) return null;
   let n = parseFloat(m[1]);
   const u = m[2];
   if (u === "k") n *= 1e3;
-  else if (u === "l" || u === "lakh" || u === "lakhs") n *= 1e5;
-  else if (u === "cr" || u === "crore") n *= 1e7;
-  return n >= 500 ? n : null;
+  else if (u && /^(l|lakhs?|lacs?)$/.test(u)) n *= 1e5;
+  else if (u && /^(cr|crores?)$/.test(u)) n *= 1e7;
+  return n >= 500 && n <= 1e9 ? n : null;
 }
 
 export function twinSummary(t: TwinState) {
@@ -32,7 +32,7 @@ export function twinSummary(t: TwinState) {
   };
 }
 
-export function answerWithEngine(personaId: PersonaId, question: string, asOf?: string): CopilotAnswer {
+export function answerWithEngine(personaId: PersonaSource, question: string, asOf?: string): CopilotAnswer {
   const t = buildTwin(personaId, {}, asOf);
   const q = question.toLowerCase();
   const amount = parseAmount(q);

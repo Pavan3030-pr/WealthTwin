@@ -46,15 +46,15 @@ export function CommandMenu() {
 
   return (
     <>
-      <button onClick={() => setOpen(true)} aria-label="Open command menu" className="group flex h-10 w-full max-w-sm items-center gap-2 rounded-xl border border-slate-200 bg-white/80 px-3 text-sm text-slate-500 shadow-sm transition hover:border-slate-300 hover:bg-white">
+      <button onClick={() => setOpen(true)} aria-label="Open command menu" className="group flex h-11 w-full max-w-xl items-center gap-2.5 rounded-xl border border-slate-200 bg-white px-4 text-base text-slate-500 shadow-sm transition hover:border-slate-300 hover:bg-white">
         <Search className="h-4 w-4" aria-hidden="true" />
         <span className="flex-1 text-left">Search or ask your twin…</span>
-        <kbd className="rounded-md border border-slate-200 bg-slate-50 px-1.5 py-0.5 text-[11px] font-medium text-slate-500">⌘K</kbd>
+        <kbd className="rounded-md border border-slate-200 bg-slate-50 px-1.5 py-0.5 text-xs font-medium text-slate-500">⌘K</kbd>
       </button>
 
       {open && (
         <div className="fixed inset-0 z-50 flex items-start justify-center bg-slate-900/30 p-4 pt-[14vh] backdrop-blur-sm" onMouseDown={close} role="presentation">
-          <div role="dialog" aria-modal="true" aria-label="Command menu" onMouseDown={(e) => e.stopPropagation()} className="w-full max-w-xl overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl">
+          <div role="dialog" aria-modal="true" aria-label="Command menu" onMouseDown={(e) => e.stopPropagation()} className="w-full max-w-2xl overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl">
             <div className="flex items-center gap-3 border-b border-slate-100 px-4">
               <Search className="h-4 w-4 text-slate-400" aria-hidden="true" />
               <input ref={inputRef} value={q} onChange={(e) => { setQ(e.target.value); setIdx(0); }}
@@ -63,7 +63,7 @@ export function CommandMenu() {
                   if (e.key === "ArrowUp") { e.preventDefault(); setIdx((i) => Math.max(0, i - 1)); }
                   if (e.key === "Enter") choose(items[idx]);
                 }}
-                placeholder="Jump to a page, switch persona, or ask a question" aria-label="Search commands" className="h-14 flex-1 bg-transparent text-[15px] outline-none placeholder:text-slate-400" />
+                placeholder="Jump to a page, switch persona, or ask a question" aria-label="Search commands" className="h-14 flex-1 bg-transparent text-base outline-none placeholder:text-slate-400" />
             </div>
             <ul className="max-h-80 overflow-y-auto p-2" role="listbox">
               {items.length === 0 && <li className="px-3 py-6 text-center text-sm text-slate-500">No matches</li>}
