@@ -1,6 +1,7 @@
 export type RiskLevel = "low" | "medium" | "high";
 export type AssetClass = "equity" | "debt" | "gold" | "cash";
-export type PersonaId = "aarav" | "meera" | "rohan";
+export type DemoPersonaId = "aarav" | "meera" | "rohan";
+export type PersonaId = DemoPersonaId | "custom";
 export type BillCategory = "housing" | "emi" | "utilities" | "insurance" | "subscription" | "education";
 
 export interface Bill {

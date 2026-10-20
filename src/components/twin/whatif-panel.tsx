@@ -2,7 +2,7 @@
 import { useMemo, useState } from "react";
 import { ArrowDownRight, ArrowRight, ArrowUpRight, RotateCcw } from "lucide-react";
 import { buildTwin } from "@/services/engine";
-import type { Overrides, PersonaId } from "@/types/twin";
+import type { Overrides, Persona } from "@/types/twin";
 import { Card, CardTitle } from "@/components/ui/card";
 import { ForecastChart } from "@/components/charts/forecast-chart";
 import { cn, fmtDate, inr, pct } from "@/lib/utils";
@@ -48,17 +48,17 @@ function Diff({ before, after, fmt, higherIsBetter = true }: { before: number; a
   );
 }
 
-export function WhatIfPanel({ personaId, asOf }: { personaId: PersonaId; asOf: string }) {
+export function WhatIfPanel({ persona, asOf }: { persona: Persona; asOf: string }) {
   const [c, setC] = useState<Controls>(ZERO);
   const [preset, setPreset] = useState("Today");
 
-  const base = useMemo(() => buildTwin(personaId, {}, asOf), [personaId, asOf]);
+  const base = useMemo(() => buildTwin(persona, {}, asOf), [persona, asOf]);
   const overrides: Overrides = {
     extraSip: c.extraSip, expenseCutPct: c.expenseCutPct, incomeChangePct: c.incomeChangePct,
     oneTimeShock: c.oneTimeShock, marketDropPct: c.marketDropPct,
     equityReturn: c.equityReturnPct === 11.5 ? undefined : c.equityReturnPct / 100,
   };
-  const sim = useMemo(() => buildTwin(personaId, overrides, asOf), [personaId, asOf, c]); // eslint-disable-line react-hooks/exhaustive-deps
+  const sim = useMemo(() => buildTwin(persona, overrides, asOf), [persona, asOf, c]); // eslint-disable-line react-hooks/exhaustive-deps
   const nw5 = (t: typeof base) => t.projection[5].base;
 
   return (

@@ -1,3 +1,4 @@
+import { AssumptionsNote } from "@/components/ui/assumptions-note";
 import { getTwin } from "@/lib/twin-session";
 import { Card, CardTitle, PageHeader } from "@/components/ui/card";
 import { Delta } from "@/components/ui/badges";
@@ -37,6 +38,7 @@ export default async function GoalsPage() {
           <tbody className="divide-y divide-slate-100">{t.projection.map((p) => <tr key={p.year}><td className="py-2">{p.year}</td><td className="num py-2 text-right font-medium">{inr(p.base, true)}</td><td className="num py-2 text-right text-slate-500">{inr(p.downside, true)}</td></tr>)}</tbody>
         </table>
       </Card>
+      <AssumptionsNote><p>Projected finish compounds your monthly contribution at the portfolio&apos;s weighted expected return. Probability runs 300 random monthly return paths and counts those that reach the target by the date.</p><p>Required monthly is the contribution that reaches the target exactly on the date at the expected return.</p></AssumptionsNote>
     </>
   );
 }
