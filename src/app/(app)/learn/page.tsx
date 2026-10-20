@@ -1,5 +1,5 @@
 import { getTwin } from "@/lib/twin-session";
-import { PageHeader } from "@/components/ui/card";
+import { PageHeader } from "@/components/ui/surface";
 import { LearnList } from "@/components/twin/learn-list";
 import { buildLessons } from "@/services/education";
 

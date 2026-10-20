@@ -5,7 +5,7 @@ import { Lock, Wand2 } from "lucide-react";
 import { clearCustom, saveCustom } from "@/lib/persona-actions";
 import { EXAMPLE_INPUT, defaultGoalDate, type CustomInput } from "@/services/custom";
 import { StatementImport } from "./statement-import";
-import { Card, CardTitle } from "@/components/ui/card";
+import { Card, CardTitle } from "@/components/ui/surface";
 import { cn } from "@/lib/utils";
 
 type K = keyof CustomInput;

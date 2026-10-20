@@ -5,7 +5,7 @@ test("landing to dashboard", async ({ page }) => {
   await expect(page.getByRole("heading", { level: 1 })).toContainText("one step ahead");
   await page.getByRole("link", { name: "Explore the twin" }).click();
   await expect(page).toHaveURL(/dashboard/);
-  await expect(page.getByText("Synthetic data demo").first()).toBeVisible();
+  await expect(page.locator('text="Synthetic data demo" >> visible=true').first()).toBeVisible();
   await expect(page.getByRole("heading", { level: 1 })).toContainText("Aarav");
 });
 

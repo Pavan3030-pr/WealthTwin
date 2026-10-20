@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { AlertTriangle, CheckCircle2, Info } from "lucide-react";
 import { getTwin } from "@/lib/twin-session";
-import { Card, CardTitle, PageHeader } from "@/components/ui/card";
+import { Card, CardTitle, PageHeader } from "@/components/ui/surface";
 import { RiskBadge } from "@/components/ui/badges";
 
 export default async function InsightsPage() {
@@ -18,7 +18,7 @@ export default async function InsightsPage() {
               <Card key={i.id} className="flex gap-4">
                 <span className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${tone}`}><Icon className="h-5 w-5" aria-hidden="true" /></span>
                 <div className="min-w-0 flex-1">
-                  <div className="flex flex-wrap items-center gap-2"><h2 className="text-[15px] font-semibold text-slate-900">{i.title}</h2><RiskBadge level={i.severity} suffix="" /></div>
+                  <div className="flex flex-wrap items-center gap-2"><h2 className="text-base font-semibold text-slate-900">{i.title}</h2><RiskBadge level={i.severity} suffix="" /></div>
                   <p className="mt-1 text-sm text-slate-600">{i.body}</p>
                   {i.href && <Link href={i.href} className="mt-2 inline-block text-sm font-medium text-teal-700 hover:underline">View evidence</Link>}
                 </div>

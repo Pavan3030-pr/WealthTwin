@@ -1,5 +1,5 @@
 import { getPersonaId } from "@/lib/twin-session";
-import { PageHeader } from "@/components/ui/card";
+import { PageHeader } from "@/components/ui/surface";
 import { CopilotChat } from "@/components/twin/copilot-chat";
 import { SUGGESTED_QUESTIONS } from "@/services/copilot";
 

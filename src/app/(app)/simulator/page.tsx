@@ -1,6 +1,6 @@
 import { AssumptionsNote } from "@/components/ui/assumptions-note";
 import { getPersona } from "@/lib/twin-session";
-import { PageHeader } from "@/components/ui/card";
+import { PageHeader } from "@/components/ui/surface";
 import { WhatIfPanel } from "@/components/twin/whatif-panel";
 import { todayIso } from "@/services/engine";
 

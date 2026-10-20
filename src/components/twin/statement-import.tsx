@@ -1,7 +1,7 @@
 "use client";
 import { useRef, useState } from "react";
 import { Download, FileUp, ShieldCheck } from "lucide-react";
-import { Card, CardTitle } from "@/components/ui/card";
+import { Card, CardTitle } from "@/components/ui/surface";
 import { MAX_BYTES, parseStatement, sampleStatement, type StatementSummary } from "@/services/statement";
 import { cn, inr } from "@/lib/utils";
 

@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { CheckCircle2, ShieldAlert } from "lucide-react";
-import { Card, CardTitle } from "@/components/ui/card";
+import { Card, CardTitle } from "@/components/ui/surface";
 import { cn, inr } from "@/lib/utils";
 
 export function SafeToSpend({ headroom, perDay, minBalance90, floor }: { headroom: number; perDay: number; minBalance90: number; floor: number }) {

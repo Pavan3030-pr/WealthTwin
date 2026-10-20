@@ -17,7 +17,7 @@ export function LessonCard({ lesson, onDone }: { lesson: Lesson; onDone: (id: st
             <span className="rounded-full bg-slate-100 px-2 py-0.5 font-medium">{lesson.level}</span>
             <span className="inline-flex items-center gap-1"><Clock className="h-3 w-3" aria-hidden="true" />{lesson.minutes} min</span>
           </div>
-          <h3 className="text-[15px] font-semibold text-slate-900">{lesson.title}</h3>
+          <h3 className="text-base font-semibold text-slate-900">{lesson.title}</h3>
           <p className="mt-0.5 text-sm text-slate-500">{lesson.summary}</p>
         </div>
         {picked !== null && correct && <CheckCircle2 className="h-5 w-5 shrink-0 text-emerald-500" aria-label="Completed" />}

@@ -3,7 +3,7 @@ import { useMemo, useState } from "react";
 import { ArrowDownRight, ArrowRight, ArrowUpRight, RotateCcw } from "lucide-react";
 import { buildTwin } from "@/services/engine";
 import type { Overrides, Persona } from "@/types/twin";
-import { Card, CardTitle } from "@/components/ui/card";
+import { Card, CardTitle } from "@/components/ui/surface";
 import { ForecastChart } from "@/components/charts/forecast-chart";
 import { cn, fmtDate, inr, pct } from "@/lib/utils";
 

@@ -20,11 +20,18 @@
 
 :root { color-scheme: light; }
 
+html { font-size: 16px; }
+@media (min-width: 1280px) { html { font-size: 17px; } }
+@media (min-width: 1700px) { html { font-size: 18px; } }
+@media (min-width: 2100px) { html { font-size: 19px; } }
+
+
 html, body {
   background: var(--color-canvas);
   color: var(--color-ink);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
+  line-height: 1.55;
 }
 
 @layer base {

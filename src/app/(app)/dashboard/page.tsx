@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ArrowRight, Award, Flame, Sparkles, TrendingUp } from "lucide-react";
 import { getTwin } from "@/lib/twin-session";
-import { Card, CardTitle } from "@/components/ui/card";
+import { Card, CardTitle } from "@/components/ui/surface";
 import { RiskBadge } from "@/components/ui/badges";
 import { ScoreRing } from "@/components/twin/score-ring";
 import { SafeToSpend } from "@/components/twin/safe-to-spend";

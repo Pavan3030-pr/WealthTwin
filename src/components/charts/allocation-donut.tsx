@@ -16,7 +16,7 @@ export function AllocationDonut({ data, centerLabel, centerValue }: { data: { na
       </ResponsiveContainer>
       <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center">
         <span className="num text-lg font-semibold text-slate-900">{centerValue}</span>
-        <span className="text-[11px] uppercase tracking-wider text-slate-500">{centerLabel}</span>
+        <span className="text-xs uppercase tracking-wider text-slate-500">{centerLabel}</span>
       </div>
     </div>
   );

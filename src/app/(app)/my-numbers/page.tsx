@@ -1,5 +1,5 @@
 import { getCustom } from "@/lib/twin-session";
-import { PageHeader } from "@/components/ui/card";
+import { PageHeader } from "@/components/ui/surface";
 import { CustomForm } from "@/components/twin/custom-form";
 
 export default async function MyNumbersPage() {

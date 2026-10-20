@@ -1,6 +1,6 @@
 import { AssumptionsNote } from "@/components/ui/assumptions-note";
 import { getTwin } from "@/lib/twin-session";
-import { Card, CardTitle, PageHeader } from "@/components/ui/card";
+import { Card, CardTitle, PageHeader } from "@/components/ui/surface";
 import { RiskBadge } from "@/components/ui/badges";
 import { ForecastChart } from "@/components/charts/forecast-chart";
 import { fmtDate, inr } from "@/lib/utils";

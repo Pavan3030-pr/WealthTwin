@@ -57,8 +57,8 @@ export function CopilotChat({ persona, suggestions, initialQuestion }: { persona
               <p>{m.text}</p>
               {m.role === "assistant" && m.basis && (
                 <div className="mt-3 flex flex-wrap items-center gap-1.5">
-                  <span className={cn("rounded-full px-2 py-0.5 text-[11px] font-semibold", m.mode === "ai" ? "bg-violet-50 text-violet-700" : "bg-teal-50 text-teal-700")}>{m.mode === "ai" ? "AI-written" : "Explainable engine"}</span>
-                  {m.basis.slice(0, 3).map((b) => <span key={b} className="rounded-full bg-white px-2 py-0.5 text-[11px] text-slate-500 ring-1 ring-slate-200">{b}</span>)}
+                  <span className={cn("rounded-full px-2 py-0.5 text-xs font-semibold", m.mode === "ai" ? "bg-violet-50 text-violet-700" : "bg-teal-50 text-teal-700")}>{m.mode === "ai" ? "AI-written" : "Explainable engine"}</span>
+                  {m.basis.slice(0, 3).map((b) => <span key={b} className="rounded-full bg-white px-2 py-0.5 text-xs text-slate-500 ring-1 ring-slate-200">{b}</span>)}
                 </div>
               )}
               {m.role === "assistant" && m.followUps && i === msgs.length - 1 && (

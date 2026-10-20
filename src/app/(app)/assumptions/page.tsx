@@ -1,5 +1,5 @@
 import { getTwin } from "@/lib/twin-session";
-import { Card, CardTitle, PageHeader } from "@/components/ui/card";
+import { Card, CardTitle, PageHeader } from "@/components/ui/surface";
 import { A, CLASS_DEFAULTS, RETIREMENT, SCORE } from "@/services/assumptions";
 import { pct } from "@/lib/utils";
 
