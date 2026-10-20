@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BookOpen, Briefcase, Presentation, LayoutDashboard, LineChart, Lightbulb, Sparkles, SlidersHorizontal, Target } from "lucide-react";
+import { BookOpen, Briefcase, Calculator, FileText, Presentation, ScrollText, LayoutDashboard, LineChart, Lightbulb, Sparkles, SlidersHorizontal, Target } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export const NAV = [
@@ -13,6 +13,9 @@ export const NAV = [
   { href: "/insights", label: "Insights", icon: Lightbulb },
   { href: "/copilot", label: "AI Copilot", icon: Sparkles },
   { href: "/learn", label: "Learn", icon: BookOpen },
+  { href: "/report", label: "Twin report", icon: FileText },
+  { href: "/my-numbers", label: "My numbers", icon: Calculator },
+  { href: "/assumptions", label: "Assumptions", icon: ScrollText },
   { href: "/pitch", label: "Pitch", icon: Presentation },
 ];
 

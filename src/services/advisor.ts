@@ -14,7 +14,7 @@ export interface NextAction {
 }
 
 export function nextBestAction(t: TwinState): NextAction {
-  const id = t.persona.id;
+  const id = t.persona;
   if (t.cashflowHealth !== "low") {
     const sim = buildTwin(id, { expenseCutPct: 15 }, t.asOf);
     return {
@@ -69,7 +69,7 @@ export interface AdaptiveSip { current: number; suggested: number; tone: "reduce
 export function adaptiveSip(t: TwinState): AdaptiveSip {
   const current = t.goals.reduce((s, g) => s + g.monthly, 0);
   const free = t.monthlySurplus - current;
-  const id = t.persona.id;
+  const id = t.persona;
   if (t.cashflowHealth === "high") {
     const suggested = Math.round((current * 0.7) / 500) * 500;
     const sim = buildTwin(id, { extraSip: suggested - current }, t.asOf);

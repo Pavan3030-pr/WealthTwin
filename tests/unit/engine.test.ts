@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { buildTwin, goalProbability, monthsToTarget, requiredMonthly } from "@/services/engine";
-import { answerWithEngine } from "@/services/copilot";
+import { answerWithEngine, parseAmount } from "@/services/copilot";
 
 const AS_OF = "2026-10-19";
 
@@ -92,5 +92,22 @@ describe("advisor", () => {
   it("negative SIP override lowers outflow", () => {
     const a = buildTwin("meera", {}, AS_OF), b = buildTwin("meera", { extraSip: -5000 }, AS_OF);
     expect(b.stress.minBalance).toBeGreaterThanOrEqual(a.stress.minBalance);
+  });
+});
+
+describe("amount parsing", () => {
+  it("does not mistake words like laptop or lakhs-less text for units", () => {
+    expect(parseAmount("Can I afford a ₹50,000 laptop?")).toBe(50000);
+    expect(parseAmount("can i buy a kayak for 20000 kroner")).toBe(20000);
+  });
+  it("understands k, lakh and crore", () => {
+    expect(parseAmount("spend 50k")).toBe(50000);
+    expect(parseAmount("a ₹2 lakh trip")).toBe(200000);
+    expect(parseAmount("1.5 cr flat")).toBe(15000000);
+    expect(parseAmount("₹2 l")).toBe(200000);
+  });
+  it("ignores tiny or absurd numbers", () => {
+    expect(parseAmount("in 3 months")).toBe(null);
+    expect(parseAmount("spend 99999999999")).toBe(null);
   });
 });

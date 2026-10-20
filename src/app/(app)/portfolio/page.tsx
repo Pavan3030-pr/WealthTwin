@@ -1,3 +1,4 @@
+import { AssumptionsNote } from "@/components/ui/assumptions-note";
 import { getTwin } from "@/lib/twin-session";
 import { Card, CardTitle, PageHeader } from "@/components/ui/card";
 import { RiskBadge } from "@/components/ui/badges";
@@ -49,6 +50,7 @@ export default async function PortfolioPage() {
         )}
         <p className="mt-4 text-xs text-slate-400">Tip: route new SIPs to underweight classes first; it rebalances without selling.</p>
       </Card>
+      <AssumptionsNote><p>The target equity share is (110 − age)%, kept between 30% and 75%. Other classes split the remainder as debt 55%, gold 20% and cash 25%. A move is suggested only when a class drifts 6 points or more.</p></AssumptionsNote>
     </>
   );
 }
