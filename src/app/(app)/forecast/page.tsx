@@ -1,3 +1,4 @@
+import { AssumptionsNote } from "@/components/ui/assumptions-note";
 import { getTwin } from "@/lib/twin-session";
 import { Card, CardTitle, PageHeader } from "@/components/ui/card";
 import { RiskBadge } from "@/components/ui/badges";
@@ -32,6 +33,7 @@ export default async function ForecastPage() {
           ))}
         </ul>
       </Card>
+      <AssumptionsNote><p>Each day adds scheduled income, subtracts bills and your SIP, then removes an average daily spend with weekend and random variation. The band re-runs the same path with higher spending and lower income (pessimistic) or the reverse (optimistic).</p><p>The safety floor is 10 days of your average monthly spending.</p></AssumptionsNote>
     </>
   );
 }

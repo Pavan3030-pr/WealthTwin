@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import { answerWithEngine, twinSummary } from "@/services/copilot";
 import { buildTwin } from "@/services/engine";
-import { isPersonaId } from "@/services/personas";
+import { resolvePersona } from "@/services/custom";
+import { cookies } from "next/headers";
 import { rateLimit } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
@@ -14,14 +15,15 @@ export async function POST(req: Request) {
   try { body = await req.json(); } catch { return NextResponse.json({ error: "Invalid JSON" }, { status: 400 }); }
   const { message, persona } = (body ?? {}) as { message?: unknown; persona?: unknown };
   if (typeof message !== "string" || !message.trim() || message.length > 400) return NextResponse.json({ error: "Message must be 1 to 400 characters." }, { status: 400 });
-  if (!isPersonaId(persona)) return NextResponse.json({ error: "Unknown persona" }, { status: 400 });
+  const resolved = resolvePersona(persona, (await cookies()).get("wt_custom")?.value);
+  if (!resolved) return NextResponse.json({ error: "Unknown persona. Enter your numbers first." }, { status: 400 });
 
-  const base = answerWithEngine(persona, message);
+  const base = answerWithEngine(resolved, message);
   const key = process.env.ANTHROPIC_API_KEY;
   if (!key) return NextResponse.json({ ...base, mode: "engine" });
 
   try {
-    const twin = buildTwin(persona);
+    const twin = buildTwin(resolved);
     const res = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
       headers: { "content-type": "application/json", "x-api-key": key, "anthropic-version": "2023-06-01" },
