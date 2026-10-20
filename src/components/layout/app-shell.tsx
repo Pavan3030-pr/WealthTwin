@@ -17,7 +17,7 @@ export function Brand() {
   );
 }
 
-export function AppShell({ persona, children }: { persona: PersonaId; children: React.ReactNode }) {
+export function AppShell({ persona, customName, children }: { persona: PersonaId; customName?: string; children: React.ReactNode }) {
   return (
     <div className="bg-wash min-h-screen">
       <aside className="fixed inset-y-0 left-0 z-30 hidden w-64 flex-col border-r border-slate-200/80 bg-white/80 p-4 backdrop-blur lg:flex">
@@ -25,7 +25,7 @@ export function AppShell({ persona, children }: { persona: PersonaId; children: 
         <NavLinks orientation="vertical" />
         <div className="mt-auto space-y-3">
           <p className="px-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-400">Demo persona</p>
-          <PersonaSwitcher current={persona} />
+          <PersonaSwitcher current={persona} customName={customName} />
           <p className="px-1 text-[11px] leading-snug text-slate-400">Educational demo. Not investment advice. All figures are synthetic.</p>
         </div>
       </aside>
@@ -38,7 +38,7 @@ export function AppShell({ persona, children }: { persona: PersonaId; children: 
       <div className="lg:pl-64">
         <div className="hidden items-center justify-between gap-4 px-8 pt-5 lg:flex"><CommandMenu /><SyntheticBadge /></div>
         <main className="mx-auto max-w-6xl px-4 py-6 sm:px-6 lg:px-8 lg:pt-3">
-          <div className="mb-5 space-y-3 lg:hidden"><CommandMenu /><PersonaSwitcher current={persona} /></div>
+          <div className="mb-5 space-y-3 lg:hidden"><CommandMenu /><PersonaSwitcher current={persona} customName={customName} /></div>
           <div className="animate-rise">{children}</div>
         </main>
       </div>
