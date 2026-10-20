@@ -1,5 +1,5 @@
 # WealthTwin
-  wealth-twin-three.vercel.app
+  https://wealth-twin-three.vercel.app/
 
 **Your living digital finance twin.** Built for the Mochavate Product Innovation Challenge by Mochatrade.
 
